@@ -1,6 +1,6 @@
-using lab1.model;
+using PrincessProblem.model;
 
-namespace lab1;
+namespace PrincessProblem;
 
 public static class ConsoleOutput
 {
@@ -12,8 +12,7 @@ public static class ConsoleOutput
             Console.WriteLine($"Имя: {contender.Name} и насколько он хорош: {((IContender)contender).Score}");
         }
     }
-
-    public static void PrintHappinessPrincess(int happiness)
+    public static void PrintPrincessHappiness(int happiness)
     {
         Console.WriteLine("---");
         Console.WriteLine($"Принцесса счастлива на {happiness}/100");

@@ -1,33 +1,26 @@
-using lab1.model;
+using PrincessProblem.model;
 
-namespace lab1;
+namespace PrincessProblem;
 
 public static class ContendersGenerator
 {
-    private static void ShuffleContenders(Contender[] arr)
-    {
-        var rand = new Random();
-     
-        for (var i = arr.Length - 1; i >= 1; i--)
-        {
-            var j = rand.Next(i + 1);
-     
-            (arr[j], arr[i]) = (arr[i], arr[j]);
-        }
-    }
-    
     public static Contender[]  GenerateContenders()
     {
         var names = File.ReadAllLines("C:/Users/Senya/RiderProjects/C#/lab1/res/names.txt");
 
         var contenders = new Contender[names.Length];
 
-        for (var i = 0; i < names.Length; i++)
+        const int numberContenders = 100;
+
+        for (var i = 0; i < numberContenders; i++)
         {
             contenders[i] = new Contender(names[i], i + 1);
         }
-
-        ShuffleContenders(contenders);
+        
+        var random = new Random();
+        
+        contenders = contenders.OrderBy(x => random.Next()).ToArray();
+        
         return contenders;
     }
 }

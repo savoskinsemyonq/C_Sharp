@@ -1,18 +1,20 @@
-namespace lab1.model;
+namespace PrincessProblem.model;
 
 public class Princess
 {
     private Friend PrincessFriend { get; set; }
+    
     private Hall HallOfContenders { get; set; }
+    
     public int Happiness { get; private set; }
-
+    
     public Princess(Hall hall, Friend friend)
     {
         HallOfContenders = hall;
         PrincessFriend = friend;
     }
 
-    public Contender? ChooseContenderStrategy()
+    public Contender? ChooseContender()
     {
         //25 contenders skipped
         var numContendersVisited = 25;
@@ -28,21 +30,28 @@ public class Princess
                     countSuccessCompare++;
                 }
             }
-
+            //magic threshold for choose good contender
             var successThreshold = 24 + (numContendersVisited - 25) / 2;
-            if (countSuccessCompare > successThreshold )
+            if (countSuccessCompare > successThreshold)
             {
                 chosenContender = HallOfContenders.AllContenders[numContendersVisited];
-                HallOfContenders.NumberContendersVisitedPrincess = numContendersVisited+1;
-                Happiness = PrincessFriend.HelpCountHappiness(chosenContender);
+                HallOfContenders.RememberNumberContenders(numContendersVisited + 1);
                 return chosenContender;
             }
             numContendersVisited++;
         }
         //not find contender
-        HallOfContenders.NumberContendersVisitedPrincess = HallOfContenders.AllContenders.Length;
+        HallOfContenders.RememberNumberContenders(numContendersVisited);
         chosenContender = null;
-        Happiness = 10; 
         return chosenContender;
+    }
+
+    private const int HappinessIfNoContender = 10;
+    
+    private const int ThresholdGoodContender = 51;
+    
+    public void CountHappiness(IContender? chosenContender)
+    {
+        Happiness = chosenContender is null ? HappinessIfNoContender : chosenContender.Score < ThresholdGoodContender ? 0 : chosenContender.Score;
     }
 }

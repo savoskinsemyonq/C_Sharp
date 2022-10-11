@@ -1,17 +1,24 @@
-namespace lab1.model;
+namespace PrincessProblem.model;
 
 public class Hall
 {
-    public int NumberContendersVisitedPrincess { get; set; }
+    public int ContendersNumberWhoVisitedPrincess { get; private set; }
+    
     public Contender[] AllContenders { get; private set; }
+    
     public Hall(Contender[] contenders)
     {
         AllContenders = contenders;
-        NumberContendersVisitedPrincess = 0;
+        ContendersNumberWhoVisitedPrincess = 0;
+    }
+
+    public void RememberNumberContenders(int contendersNumberWhoVisitedPrincess)
+    {
+        ContendersNumberWhoVisitedPrincess=contendersNumberWhoVisitedPrincess;
     }
 
     public Contender[] ReturnListContenders()
     {
-        return AllContenders[..NumberContendersVisitedPrincess];
+        return AllContenders[..ContendersNumberWhoVisitedPrincess];
     }
 }

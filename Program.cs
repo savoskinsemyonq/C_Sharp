@@ -1,16 +1,18 @@
-﻿using lab1;
-using lab1.model;
+﻿using PrincessProblem;
+using PrincessProblem.model;
 
 var contenders = ContendersGenerator.GenerateContenders();
 
 var hall = new Hall(contenders);
 
-var friend= new Friend();
+var friend = new Friend();
 
-var princess= new Princess(hall, friend);
+var princess = new Princess(hall, friend);
 
-princess.ChooseContenderStrategy();
+var chosenContender=princess.ChooseContender();
+
+princess.CountHappiness(chosenContender);
 
 ConsoleOutput.PrintListVisitedContenders(hall.ReturnListContenders());
 
-ConsoleOutput.PrintHappinessPrincess(princess.Happiness);
+ConsoleOutput.PrintPrincessHappiness(princess.Happiness);
