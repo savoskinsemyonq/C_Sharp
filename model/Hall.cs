@@ -4,7 +4,7 @@ public class Hall
 {
     public int ContendersNumberWhoVisitedPrincess { get; private set; }
     
-    public Contender[] AllContenders { get; private set; }
+    public readonly Contender[] AllContenders;
     
     public Hall(Contender[] contenders)
     {
@@ -20,5 +20,10 @@ public class Hall
     public Contender[] ReturnListContenders()
     {
         return AllContenders[..ContendersNumberWhoVisitedPrincess];
+    }
+
+    public bool IsContenderVisitedPrincess(Contender contender)
+    {
+        return Array.IndexOf(AllContenders, contender) <= ContendersNumberWhoVisitedPrincess;
     }
 }

@@ -9,9 +9,10 @@ public static class ConsoleOutput
         Console.WriteLine("Список участвовавших в отборе!");
         foreach (var contender in contenders)
         {
-            Console.WriteLine($"Имя: {contender.Name} и насколько он хорош: {((IContender)contender).Score}");
+            Console.WriteLine($"Имя: {contender.Name} и насколько он хорош: {contender.Score}");
         }
     }
+    
     public static void PrintPrincessHappiness(int happiness)
     {
         Console.WriteLine("---");

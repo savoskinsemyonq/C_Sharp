@@ -5,11 +5,11 @@ var contenders = ContendersGenerator.GenerateContenders();
 
 var hall = new Hall(contenders);
 
-var friend = new Friend();
+var friend = new Friend(hall);
 
 var princess = new Princess(hall, friend);
 
-var chosenContender=princess.ChooseContender();
+var chosenContender = princess.ChooseContender();
 
 princess.CountHappiness(chosenContender);
 

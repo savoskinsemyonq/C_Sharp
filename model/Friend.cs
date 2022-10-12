@@ -2,8 +2,20 @@ namespace PrincessProblem.model;
 
 public class Friend
 {
-    public IContender CompareContenders(IContender contender1, IContender contender2)
+    private readonly Hall _hall;
+
+    public Friend(Hall hall)
     {
-        return contender1.Score > contender2.Score ? contender1 : contender2;
+        _hall = hall;
+    }
+    
+    public IContender? CompareContenders(Contender contender1, Contender contender2)
+    {
+        if (_hall.IsContenderVisitedPrincess(contender1) & _hall.IsContenderVisitedPrincess(contender2))
+        {
+            return contender1.Score > contender2.Score ? contender1 : contender2;
+        }
+
+        return null;
     }
 }

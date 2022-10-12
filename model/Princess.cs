@@ -2,30 +2,36 @@ namespace PrincessProblem.model;
 
 public class Princess
 {
-    private Friend PrincessFriend { get; set; }
+    private readonly Friend _princessFriend;
+
+    private readonly Hall _hallOfContenders;
     
-    private Hall HallOfContenders { get; set; }
+    private const int HappinessIfNoContender = 10;
+    
+    private const int ThresholdGoodContender = 51;
     
     public int Happiness { get; private set; }
     
     public Princess(Hall hall, Friend friend)
     {
-        HallOfContenders = hall;
-        PrincessFriend = friend;
+        _hallOfContenders = hall;
+        _princessFriend = friend;
     }
 
-    public Contender? ChooseContender()
+    public IContender? ChooseContender()
     {
         //25 contenders skipped
         var numContendersVisited = 25;
-        Contender? chosenContender;
-        while (numContendersVisited < HallOfContenders.AllContenders.Length)
+        _hallOfContenders.RememberNumberContenders(numContendersVisited);
+        IContender? chosenContender;
+        while (_hallOfContenders.ContendersNumberWhoVisitedPrincess < _hallOfContenders.AllContenders.Length)
         {
+            numContendersVisited = _hallOfContenders.ContendersNumberWhoVisitedPrincess;
             var countSuccessCompare = 0;
             for (var i = 0; i < numContendersVisited; i++)
             {
-                var winner = PrincessFriend.CompareContenders(HallOfContenders.AllContenders[i], HallOfContenders.AllContenders[numContendersVisited]);
-                if (winner == HallOfContenders.AllContenders[numContendersVisited])
+                var winner = _princessFriend.CompareContenders(_hallOfContenders.AllContenders[i], _hallOfContenders.AllContenders[numContendersVisited]);
+                if (winner == _hallOfContenders.AllContenders[numContendersVisited])
                 {
                     countSuccessCompare++;
                 }
@@ -34,24 +40,27 @@ public class Princess
             var successThreshold = 24 + (numContendersVisited - 25) / 2;
             if (countSuccessCompare > successThreshold)
             {
-                chosenContender = HallOfContenders.AllContenders[numContendersVisited];
-                HallOfContenders.RememberNumberContenders(numContendersVisited + 1);
+                chosenContender = _hallOfContenders.AllContenders[numContendersVisited];
+                _hallOfContenders.RememberNumberContenders(numContendersVisited + 1);
                 return chosenContender;
             }
-            numContendersVisited++;
+            _hallOfContenders.RememberNumberContenders(numContendersVisited + 1);
         }
         //not find contender
-        HallOfContenders.RememberNumberContenders(numContendersVisited);
+        _hallOfContenders.RememberNumberContenders(numContendersVisited);
         chosenContender = null;
         return chosenContender;
     }
-
-    private const int HappinessIfNoContender = 10;
-    
-    private const int ThresholdGoodContender = 51;
     
     public void CountHappiness(IContender? chosenContender)
     {
-        Happiness = chosenContender is null ? HappinessIfNoContender : chosenContender.Score < ThresholdGoodContender ? 0 : chosenContender.Score;
+        if (chosenContender is null)
+        {
+            Happiness = HappinessIfNoContender;
+        }
+        else
+        {
+            Happiness=((Contender)chosenContender).Score < ThresholdGoodContender ? 0 : ((Contender)chosenContender).Score;
+        }
     }
 }
