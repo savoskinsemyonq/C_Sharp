@@ -2,28 +2,38 @@ namespace PrincessProblem.model;
 
 public class Hall
 {
-    public int ContendersNumberWhoVisitedPrincess { get; private set; }
+    private int _contendersNumberWhoVisitedPrincess;
     
-    public readonly Contender[] AllContenders;
+    private readonly Contender[] _allContenders;
     
     public Hall(Contender[] contenders)
     {
-        AllContenders = contenders;
-        ContendersNumberWhoVisitedPrincess = 0;
+        _allContenders = contenders;
+        _contendersNumberWhoVisitedPrincess = 0;
     }
 
     public void RememberNumberContenders(int contendersNumberWhoVisitedPrincess)
     {
-        ContendersNumberWhoVisitedPrincess=contendersNumberWhoVisitedPrincess;
+        _contendersNumberWhoVisitedPrincess = contendersNumberWhoVisitedPrincess;
     }
 
     public Contender[] ReturnListContenders()
     {
-        return AllContenders[..ContendersNumberWhoVisitedPrincess];
+        return _allContenders[.._contendersNumberWhoVisitedPrincess];
+    }
+
+    public Contender PeekContender(int visitNumber)
+    {
+        return _allContenders[visitNumber];
+    }
+
+    public int GetContendersNumberWhoVisitedPrincess()
+    {
+        return _contendersNumberWhoVisitedPrincess;
     }
 
     public bool IsContenderVisitedPrincess(Contender contender)
     {
-        return Array.IndexOf(AllContenders, contender) <= ContendersNumberWhoVisitedPrincess;
+        return Array.IndexOf(_allContenders, contender) <= _contendersNumberWhoVisitedPrincess;
     }
 }

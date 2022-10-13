@@ -9,13 +9,14 @@ public class Friend
         _hall = hall;
     }
     
-    public IContender? CompareContenders(Contender contender1, Contender contender2)
+    public IContender CompareContenders(Contender contender1, Contender contender2)
     {
         if (_hall.IsContenderVisitedPrincess(contender1) & _hall.IsContenderVisitedPrincess(contender2))
         {
             return contender1.Score > contender2.Score ? contender1 : contender2;
         }
 
-        return null;
+        throw new Exception("Friend trying to compare contenders, who didn't meet princess");
+
     }
 }

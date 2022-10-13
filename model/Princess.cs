@@ -9,6 +9,8 @@ public class Princess
     private const int HappinessIfNoContender = 10;
     
     private const int ThresholdGoodContender = 51;
+
+    private const int NumberAllContenders = 100;
     
     public int Happiness { get; private set; }
     
@@ -24,14 +26,14 @@ public class Princess
         var numContendersVisited = 25;
         _hallOfContenders.RememberNumberContenders(numContendersVisited);
         IContender? chosenContender;
-        while (_hallOfContenders.ContendersNumberWhoVisitedPrincess < _hallOfContenders.AllContenders.Length)
+        while (_hallOfContenders.GetContendersNumberWhoVisitedPrincess() < NumberAllContenders)
         {
-            numContendersVisited = _hallOfContenders.ContendersNumberWhoVisitedPrincess;
+            numContendersVisited = _hallOfContenders.GetContendersNumberWhoVisitedPrincess();
             var countSuccessCompare = 0;
             for (var i = 0; i < numContendersVisited; i++)
             {
-                var winner = _princessFriend.CompareContenders(_hallOfContenders.AllContenders[i], _hallOfContenders.AllContenders[numContendersVisited]);
-                if (winner == _hallOfContenders.AllContenders[numContendersVisited])
+                var winner = _princessFriend.CompareContenders(_hallOfContenders.PeekContender(i), _hallOfContenders.PeekContender(numContendersVisited));
+                if (winner == _hallOfContenders.PeekContender(numContendersVisited))
                 {
                     countSuccessCompare++;
                 }
@@ -40,7 +42,7 @@ public class Princess
             var successThreshold = 24 + (numContendersVisited - 25) / 2;
             if (countSuccessCompare > successThreshold)
             {
-                chosenContender = _hallOfContenders.AllContenders[numContendersVisited];
+                chosenContender = _hallOfContenders.PeekContender(numContendersVisited);
                 _hallOfContenders.RememberNumberContenders(numContendersVisited + 1);
                 return chosenContender;
             }
@@ -58,9 +60,13 @@ public class Princess
         {
             Happiness = HappinessIfNoContender;
         }
+        else if(chosenContender is Contender contender)
+        {
+            Happiness=contender.Score < ThresholdGoodContender ? 0 : contender.Score;
+        }
         else
         {
-            Happiness=((Contender)chosenContender).Score < ThresholdGoodContender ? 0 : ((Contender)chosenContender).Score;
+            throw new Exception("Princess choose bad contender and can't count happiness!");
         }
     }
 }

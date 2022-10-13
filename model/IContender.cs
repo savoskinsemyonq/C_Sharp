@@ -2,5 +2,5 @@ namespace PrincessProblem.model;
 
 public interface IContender
 {
-    public string Name { get; set; }
+    public string Name { get;}
 }
