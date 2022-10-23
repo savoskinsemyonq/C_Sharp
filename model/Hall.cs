@@ -2,24 +2,16 @@ namespace PrincessProblem.model;
 
 public class Hall
 {
-    private int _contendersNumberWhoVisitedPrincess;
-    
     private readonly Contender[] _allContenders;
-    
+
     public Hall(Contender[] contenders)
     {
         _allContenders = contenders;
-        _contendersNumberWhoVisitedPrincess = 0;
     }
 
-    public void RememberNumberContenders(int contendersNumberWhoVisitedPrincess)
+    public Contender[] ReturnListContenders(int contendersNumberWhoVisitedPrincess)
     {
-        _contendersNumberWhoVisitedPrincess = contendersNumberWhoVisitedPrincess;
-    }
-
-    public Contender[] ReturnListContenders()
-    {
-        return _allContenders[.._contendersNumberWhoVisitedPrincess];
+        return _allContenders[..contendersNumberWhoVisitedPrincess];
     }
 
     public Contender PeekContender(int visitNumber)
@@ -27,13 +19,21 @@ public class Hall
         return _allContenders[visitNumber];
     }
 
-    public int GetContendersNumberWhoVisitedPrincess()
+    public bool IsContenderVisitedPrincess(Contender contender, int contendersNumberWhoVisitedPrincess)
     {
-        return _contendersNumberWhoVisitedPrincess;
+        var whoVisited = _allContenders[..(contendersNumberWhoVisitedPrincess + 1)];
+        return Array.Exists(whoVisited, cont => cont.Name.Equals(contender.Name));
     }
 
-    public bool IsContenderVisitedPrincess(Contender contender)
+    public int GetContenderScore(string contenderName, int contendersNumberWhoVisitedPrincess)
     {
-        return Array.IndexOf(_allContenders, contender) <= _contendersNumberWhoVisitedPrincess;
+        var whoVisited = _allContenders[..contendersNumberWhoVisitedPrincess];
+        var contender = Array.Find(whoVisited, cont => cont.Name.Equals(contenderName));
+        if (contender != null)
+        {
+            return contender.Score;
+        }
+
+        throw new Exception("Trying get contender score, who didn't meet princess");
     }
 }

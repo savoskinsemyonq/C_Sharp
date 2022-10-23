@@ -11,8 +11,8 @@ var princess = new Princess(hall, friend);
 
 var chosenContender = princess.ChooseContender();
 
-princess.CountHappiness(chosenContender);
+princess.CountHappiness(chosenContender?.Name);
 
-ConsoleOutput.PrintListVisitedContenders(hall.ReturnListContenders());
+ConsoleOutput.PrintListVisitedContenders(hall.ReturnListContenders(princess.СontendersNumberWhoVisitedPrincess));
 
 ConsoleOutput.PrintPrincessHappiness(princess.Happiness);

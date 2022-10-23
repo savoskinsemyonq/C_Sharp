@@ -16,11 +16,11 @@ public static class ContendersGenerator
         {
             contenders[i] = new Contender(hundredUniqueNames[i], i + 1);
         }
-        
+
         var random = new Random();
-        
+
         contenders = contenders.OrderBy(x => random.Next()).ToArray();
-        
+
         return contenders;
     }
 }
