@@ -12,7 +12,6 @@ public class Princess
 
     private const int NumberAllContenders = 100;
 
-    public int СontendersNumberWhoVisitedPrincess { get; private set; }
 
     public int Happiness { get; private set; }
 
@@ -20,43 +19,39 @@ public class Princess
     {
         _hallOfContenders = hall;
         _princessFriend = friend;
-        СontendersNumberWhoVisitedPrincess = 0;
     }
 
     public IContender? ChooseContender()
     {
         //25 contenders skipped
-        СontendersNumberWhoVisitedPrincess = 25;
+        var numberLastContender = 25;
         IContender? chosenContender;
-        while (СontendersNumberWhoVisitedPrincess < NumberAllContenders)
+        while (numberLastContender < NumberAllContenders)
         {
             //new contender go to princess
             var countSuccessCompare = 0;
-            for (var i = 0; i < СontendersNumberWhoVisitedPrincess; i++)
+            for (var i = 0; i < numberLastContender; i++)
             {
                 var winner = _princessFriend.CompareContenders(_hallOfContenders.PeekContender(i),
-                    _hallOfContenders.PeekContender(СontendersNumberWhoVisitedPrincess),
-                    СontendersNumberWhoVisitedPrincess);
-                if (winner == _hallOfContenders.PeekContender(СontendersNumberWhoVisitedPrincess))
+                    _hallOfContenders.PeekContender(numberLastContender));
+                if (winner == _hallOfContenders.PeekContender(numberLastContender))
                 {
                     countSuccessCompare++;
                 }
             }
 
             //magic threshold for choose good contender
-            var successThreshold = 24 + (СontendersNumberWhoVisitedPrincess - 25) / 2;
+            var successThreshold = 24 + (numberLastContender - 25) / 2;
             if (countSuccessCompare > successThreshold)
             {
-                chosenContender = _hallOfContenders.PeekContender(СontendersNumberWhoVisitedPrincess);
-                СontendersNumberWhoVisitedPrincess += 1;
+                chosenContender = _hallOfContenders.PeekContender(numberLastContender);
                 return chosenContender;
             }
 
-            СontendersNumberWhoVisitedPrincess += 1;
+            numberLastContender += 1;
         }
 
         //not find contender
-        СontendersNumberWhoVisitedPrincess = NumberAllContenders;
         chosenContender = null;
         return chosenContender;
     }
@@ -69,7 +64,7 @@ public class Princess
         }
         else
         {
-            var score = _hallOfContenders.GetContenderScore(chosenContenderName, СontendersNumberWhoVisitedPrincess);
+            var score = _hallOfContenders.GetContenderScore(chosenContenderName);
             Happiness = score < ThresholdGoodContender ? 0 : score;
         }
     }

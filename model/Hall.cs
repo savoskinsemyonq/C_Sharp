@@ -4,30 +4,32 @@ public class Hall
 {
     private readonly Contender[] _allContenders;
 
+    public int СontendersNumberWhoVisitedPrincess { get; private set; }
+
     public Hall(Contender[] contenders)
     {
         _allContenders = contenders;
     }
 
-    public Contender[] ReturnListContenders(int contendersNumberWhoVisitedPrincess)
-    {
-        return _allContenders[..contendersNumberWhoVisitedPrincess];
-    }
-
     public Contender PeekContender(int visitNumber)
     {
+        if (visitNumber > СontendersNumberWhoVisitedPrincess)
+        {
+            СontendersNumberWhoVisitedPrincess = visitNumber;
+        }
+
         return _allContenders[visitNumber];
     }
 
-    public bool IsContenderVisitedPrincess(Contender contender, int contendersNumberWhoVisitedPrincess)
+    public bool IsContenderVisitedPrincess(Contender contender)
     {
-        var whoVisited = _allContenders[..(contendersNumberWhoVisitedPrincess + 1)];
+        var whoVisited = _allContenders[..(СontendersNumberWhoVisitedPrincess + 1)];
         return Array.Exists(whoVisited, cont => cont.Name.Equals(contender.Name));
     }
 
-    public int GetContenderScore(string contenderName, int contendersNumberWhoVisitedPrincess)
+    public int GetContenderScore(string contenderName)
     {
-        var whoVisited = _allContenders[..contendersNumberWhoVisitedPrincess];
+        var whoVisited = _allContenders[..(СontendersNumberWhoVisitedPrincess + 1)];
         var contender = Array.Find(whoVisited, cont => cont.Name.Equals(contenderName));
         if (contender != null)
         {
