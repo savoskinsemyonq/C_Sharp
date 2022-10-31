@@ -9,19 +9,25 @@ public class Hall
     public Hall(Contender[] contenders)
     {
         _allContenders = contenders;
+        СontendersNumberWhoVisitedPrincess = Constants.NumberSkippedContenders;
     }
 
-    public Contender PeekContender(int visitNumber)
+    public IContender PeekContender(int visitNumber)
     {
-        if (visitNumber > СontendersNumberWhoVisitedPrincess)
+        if (visitNumber - СontendersNumberWhoVisitedPrincess == 1)
         {
-            СontendersNumberWhoVisitedPrincess = visitNumber;
+            СontendersNumberWhoVisitedPrincess++;
         }
 
-        return _allContenders[visitNumber];
+        if (visitNumber <= СontendersNumberWhoVisitedPrincess)
+        {
+            return _allContenders[visitNumber];
+        }
+
+        throw new Exception("Princess trying to peek contender, who didn't visit princess!");
     }
 
-    public bool IsContenderVisitedPrincess(Contender contender)
+    public bool IsContenderVisitedPrincess(IContender contender)
     {
         var whoVisited = _allContenders[..(СontendersNumberWhoVisitedPrincess + 1)];
         return Array.Exists(whoVisited, cont => cont.Name.Equals(contender.Name));

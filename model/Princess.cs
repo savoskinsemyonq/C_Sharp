@@ -12,7 +12,6 @@ public class Princess
 
     private const int NumberAllContenders = 100;
 
-
     public int Happiness { get; private set; }
 
     public Princess(Hall hall, Friend friend)
@@ -23,8 +22,8 @@ public class Princess
 
     public IContender? ChooseContender()
     {
-        //25 contenders skipped
-        var numberLastContender = 25;
+        //contenders skipped
+        var numberLastContender = Constants.NumberSkippedContenders;
         IContender? chosenContender;
         while (numberLastContender < NumberAllContenders)
         {
