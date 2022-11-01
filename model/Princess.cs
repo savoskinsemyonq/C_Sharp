@@ -29,11 +29,12 @@ public class Princess
         {
             //new contender go to princess
             var countSuccessCompare = 0;
+            var currentContender = _hallOfContenders.VisitContender(numberLastContender);
             for (var i = 0; i < numberLastContender; i++)
             {
                 var winner = _princessFriend.CompareContenders(_hallOfContenders.PeekContender(i),
-                    _hallOfContenders.PeekContender(numberLastContender));
-                if (winner == _hallOfContenders.PeekContender(numberLastContender))
+                    currentContender);
+                if (winner == currentContender)
                 {
                     countSuccessCompare++;
                 }
@@ -43,7 +44,7 @@ public class Princess
             var successThreshold = 24 + (numberLastContender - 25) / 2;
             if (countSuccessCompare > successThreshold)
             {
-                chosenContender = _hallOfContenders.PeekContender(numberLastContender);
+                chosenContender = currentContender;
                 return chosenContender;
             }
 

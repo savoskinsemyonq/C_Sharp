@@ -13,6 +13,6 @@ var chosenContender = princess.ChooseContender();
 
 princess.CountHappiness(chosenContender?.Name);
 
-ConsoleOutput.PrintListVisitedContenders(contenders[..(hall.СontendersNumberWhoVisitedPrincess + 1)]);
+ConsoleOutput.PrintListVisitedContenders(contenders[..hall.СontendersNumberWhoVisitedPrincess]);
 
 ConsoleOutput.PrintPrincessHappiness(princess.Happiness);
