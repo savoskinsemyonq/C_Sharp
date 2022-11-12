@@ -2,14 +2,30 @@ namespace PrincessProblem.model;
 
 public class Hall
 {
-    private readonly Contender[] _allContenders;
+    private Contender[] _allContenders;
 
-    public int СontendersNumberWhoVisitedPrincess { get; private set; }
+    private int СontendersNumberWhoVisitedPrincess { get; set; }
 
-    public Hall(Contender[] contenders)
+    private readonly ContendersGenerator _contendersGenerator;
+
+    public Hall(ContendersGenerator contendersGenerator)
     {
-        _allContenders = contenders;
+        _contendersGenerator = contendersGenerator;
         СontendersNumberWhoVisitedPrincess = Constants.NumberSkippedContenders;
+    }
+
+    public void GenerateContenders()
+    {
+        _allContenders = _contendersGenerator.GenerateContenders();
+    }
+
+    public void PrintListVisitedContenders()
+    {
+        Console.WriteLine("Список участвовавших в отборе!");
+        foreach (var contender in _allContenders[..СontendersNumberWhoVisitedPrincess])
+        {
+            Console.WriteLine($"Имя: {contender.Name} и насколько он хорош: {contender.Score}");
+        }
     }
 
     public IContender PeekContender(int visitNumber)
