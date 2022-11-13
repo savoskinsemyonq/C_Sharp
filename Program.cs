@@ -1,18 +1,19 @@
 ﻿using PrincessProblem;
 using PrincessProblem.model;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-var contenders = ContendersGenerator.GenerateContenders();
+IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((hostContext, services) =>
 
-var hall = new Hall(contenders);
+    {
+        services.AddHostedService<Princess>();
 
-var friend = new Friend(hall);
+        services.AddScoped<ContendersGenerator>();
 
-var princess = new Princess(hall, friend);
+        services.AddScoped<Hall>();
 
-var chosenContender = princess.ChooseContender();
-
-princess.CountHappiness(chosenContender?.Name);
-
-ConsoleOutput.PrintListVisitedContenders(contenders[..hall.СontendersNumberWhoVisitedPrincess]);
-
-ConsoleOutput.PrintPrincessHappiness(princess.Happiness);
+        services.AddScoped<Friend>();
+    })
+    .Build();
+host.Run();

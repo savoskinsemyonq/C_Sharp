@@ -2,12 +2,11 @@ using PrincessProblem.model;
 
 namespace PrincessProblem;
 
-public static class ContendersGenerator
+public class ContendersGenerator
 {
-    public static Contender[] GenerateContenders()
+    public Contender[] GenerateContenders()
     {
         var hundredUniqueNames = File.ReadAllLines("C:/Users/Senya/RiderProjects/C#/lab1/res/names.txt");
-
         var contenders = new Contender[hundredUniqueNames.Length];
 
         const int numberContenders = 100;
@@ -20,7 +19,6 @@ public static class ContendersGenerator
         var random = new Random();
 
         contenders = contenders.OrderBy(x => random.Next()).ToArray();
-
         return contenders;
     }
 }

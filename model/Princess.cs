@@ -1,10 +1,14 @@
+using Microsoft.Extensions.Hosting;
+
 namespace PrincessProblem.model;
 
-public class Princess
+public class Princess : IHostedService
 {
     private readonly Friend _princessFriend;
 
     private readonly Hall _hallOfContenders;
+
+    private readonly IHostApplicationLifetime _appLifetime;
 
     private const int HappinessIfNoContender = 10;
 
@@ -14,10 +18,11 @@ public class Princess
 
     public int Happiness { get; private set; }
 
-    public Princess(Hall hall, Friend friend)
+    public Princess(Hall hall, Friend friend, IHostApplicationLifetime appLifetime)
     {
         _hallOfContenders = hall;
         _princessFriend = friend;
+        _appLifetime = appLifetime;
     }
 
     public IContender? ChooseContender()
@@ -67,5 +72,32 @@ public class Princess
             var score = _hallOfContenders.GetContenderScore(chosenContenderName);
             Happiness = score < ThresholdGoodContender ? 0 : score;
         }
+    }
+
+    private void PrintPrincessHappiness()
+    {
+        Console.WriteLine("---");
+        Console.WriteLine($"Принцесса счастлива на {Happiness}/100");
+    }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        Task.Run(RunAsync, cancellationToken);
+        return Task.CompletedTask;
+    }
+
+    public void RunAsync()
+    {
+        _hallOfContenders.GenerateContenders();
+        var chosenContender = ChooseContender();
+        CountHappiness(chosenContender?.Name);
+        _hallOfContenders.PrintListVisitedContenders();
+        PrintPrincessHappiness();
+        _appLifetime.StopApplication();
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
     }
 }
