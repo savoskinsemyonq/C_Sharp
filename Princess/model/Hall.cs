@@ -2,17 +2,16 @@ namespace PrincessProblem.model;
 
 public class Hall
 {
-    private Contender[] _allContenders;
-
-    private int СontendersNumberWhoVisitedPrincess { get; set; }
-
     private readonly ContendersGenerator _contendersGenerator;
+    private Contender[] _allContenders;
 
     public Hall(ContendersGenerator contendersGenerator)
     {
         _contendersGenerator = contendersGenerator;
         СontendersNumberWhoVisitedPrincess = Constants.NumberSkippedContenders;
     }
+
+    private int СontendersNumberWhoVisitedPrincess { get; set; }
 
     public void GenerateContenders()
     {
@@ -23,17 +22,12 @@ public class Hall
     {
         Console.WriteLine("Список участвовавших в отборе!");
         foreach (var contender in _allContenders[..СontendersNumberWhoVisitedPrincess])
-        {
             Console.WriteLine($"Имя: {contender.Name} и насколько он хорош: {contender.Score}");
-        }
     }
 
     public IContender PeekContender(int visitNumber)
     {
-        if (visitNumber <= СontendersNumberWhoVisitedPrincess)
-        {
-            return _allContenders[visitNumber];
-        }
+        if (visitNumber <= СontendersNumberWhoVisitedPrincess) return _allContenders[visitNumber];
 
         throw new Exception("Princess trying to peek contender, who didn't visit princess!");
     }
@@ -59,10 +53,7 @@ public class Hall
     {
         var whoVisited = _allContenders[..СontendersNumberWhoVisitedPrincess];
         var contender = Array.Find(whoVisited, cont => cont.Name.Equals(contenderName));
-        if (contender != null)
-        {
-            return contender.Score;
-        }
+        if (contender != null) return contender.Score;
 
         throw new Exception("Trying get contender score, who didn't meet princess");
     }

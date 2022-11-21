@@ -1,9 +1,9 @@
-﻿using PrincessProblem;
-using PrincessProblem.model;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PrincessProblem;
+using PrincessProblem.model;
 
-IHost host = Host.CreateDefaultBuilder(args)
+var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
 
     {
