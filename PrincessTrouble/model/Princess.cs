@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Hosting;
 
-namespace PrincessProblem.model;
+namespace PrincessTrouble.model;
 
 public class Princess : IHostedService
 {
@@ -9,10 +9,14 @@ public class Princess : IHostedService
     private const int HappinessIfFirst = 20;
 
     private const int HappinessIfThird = 50;
+    
+    private const int HappinessIfAnother = 0;
 
     private const int HappinessIfFifth = 100;
 
     private const int NumberAllContenders = 100;
+
+    private const int NumberSkippedContenders = 25;
 
     private readonly IHostApplicationLifetime _appLifetime;
 
@@ -42,7 +46,8 @@ public class Princess : IHostedService
     public IContender? ChooseContender()
     {
         //contenders skipped
-        var numberLastContender = Constants.NumberSkippedContenders;
+        var numberLastContender = NumberSkippedContenders;
+        _hallOfContenders.SkipContenders(numberLastContender);
         IContender? chosenContender;
         while (numberLastContender < NumberAllContenders)
         {
@@ -93,7 +98,7 @@ public class Princess : IHostedService
                     Happiness = HappinessIfFifth;
                     break;
                 default:
-                    Happiness = 0;
+                    Happiness = HappinessIfAnother;
                     break;
             }
         }

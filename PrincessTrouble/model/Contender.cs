@@ -1,4 +1,4 @@
-namespace PrincessProblem.model;
+namespace PrincessTrouble.model;
 
 public class Contender : IContender
 {

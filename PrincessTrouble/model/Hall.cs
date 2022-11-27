@@ -1,4 +1,4 @@
-namespace PrincessProblem.model;
+namespace PrincessTrouble.model;
 
 public class Hall
 {
@@ -8,7 +8,7 @@ public class Hall
     public Hall(ContendersGenerator contendersGenerator)
     {
         _contendersGenerator = contendersGenerator;
-        СontendersNumberWhoVisitedPrincess = Constants.NumberSkippedContenders;
+        СontendersNumberWhoVisitedPrincess = 0;
     }
 
     private int СontendersNumberWhoVisitedPrincess { get; set; }
@@ -17,7 +17,16 @@ public class Hall
     {
         _allContenders = _contendersGenerator.GenerateContenders();
     }
+    //for test
+    public void GenerateContenders(Contender[] contenders)
+    {
+        _allContenders = contenders;
+    }
 
+    public void SkipContenders(int numberSkippedContenders)
+    {
+        СontendersNumberWhoVisitedPrincess = numberSkippedContenders;
+    }
     public void PrintListVisitedContenders()
     {
         Console.WriteLine("Список участвовавших в отборе!");
@@ -40,7 +49,7 @@ public class Hall
             return _allContenders[visitNumber];
         }
 
-        throw new Exception("Princess trying to visit contender out of turn!");
+        throw new Exception("Princess trying to visit contender out of turn! Nobody in hall!");
     }
 
     public bool IsContenderVisitedPrincess(IContender contender)

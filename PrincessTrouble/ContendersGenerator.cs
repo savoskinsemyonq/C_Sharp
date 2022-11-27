@@ -1,12 +1,12 @@
-using PrincessProblem.model;
+using PrincessTrouble.model;
 
-namespace PrincessProblem;
+namespace PrincessTrouble;
 
 public class ContendersGenerator
 {
     public Contender[] GenerateContenders()
     {
-        var hundredUniqueNames = File.ReadAllLines("C:/Users/Senya/RiderProjects/Princess/Princess/res/names.txt");
+        var hundredUniqueNames = File.ReadAllLines("C:/Users/Senya/RiderProjects/Princess/PrincessTrouble/res/names.txt");
         var contenders = new Contender[hundredUniqueNames.Length];
 
         const int numberContenders = 100;

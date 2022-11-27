@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PrincessProblem;
-using PrincessProblem.model;
+using PrincessTrouble;
+using PrincessTrouble.model;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
 
     {
-        services.AddHostedService<Princess>();
+        services.AddHostedService<PrincessTrouble.model.Princess>();
 
         services.AddScoped<ContendersGenerator>();
 
