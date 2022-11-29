@@ -2,6 +2,7 @@ using PrincessTrouble;
 using FluentAssertions;
 using Microsoft.Extensions.Hosting;
 using PrincessTrouble.model;
+using Moq;
 
 namespace PrincessTroubleTest;
 
@@ -19,87 +20,86 @@ public class PrincessTests
 
     private const int HappinessIfFifth = 100;
 
-    private ContendersGenerator _contendersGenerator;
-
     private Hall _hall;
 
     private Princess _princess;
 
-    private Friend _friend;
-
     private IHostApplicationLifetime _appLifetime;
 
-    private IContender? chosenContender;
-
-    private Contender[] contenders;
+    private Mock<IContendersGenerator> _mockContenderGenerator;
 
     [SetUp]
     public void Setup()
     {
-        _contendersGenerator = new ContendersGenerator();
-        _hall = new Hall(_contendersGenerator);
-        _friend = new Friend(_hall);
-        _princess = new Princess(_hall, _friend, _appLifetime);
+        _mockContenderGenerator = new Mock<IContendersGenerator>();
+        _hall = new Hall(_mockContenderGenerator.Object);
+        var friend = new Friend(_hall);
+        _princess = new Princess(_hall, friend, _appLifetime);
     }
 
     [Test]
     public void PrincessChoose_IfTheFifthContender_ShouldHaveHappiness100()
     {
-        contenders = GenerateContendersForPrincessHappiness100();
-        _hall.GenerateContenders(contenders);
-        chosenContender = _princess.ChooseContender();
+        _mockContenderGenerator.Setup(contenderGenerator => contenderGenerator.GenerateContenders())
+            .Returns(GenerateContendersForPrincessHappiness100());
+        _hall.GenerateContenders();
+        var chosenContender = _princess.ChooseContender();
         _princess.CountHappiness(chosenContender?.Name);
-        Assert.That(_princess.Happiness, Is.EqualTo(HappinessIfFifth));
+        _princess.Happiness.Should().Be(HappinessIfFifth);
     }
 
     [Test]
     public void PrincessChoose_IfTheThirdContender_ShouldHaveHappiness50()
     {
-        contenders = GenerateContendersForPrincessHappiness50();
-        _hall.GenerateContenders(contenders);
-        chosenContender = _princess.ChooseContender();
+        _mockContenderGenerator.Setup(contenderGenerator => contenderGenerator.GenerateContenders())
+            .Returns(GenerateContendersForPrincessHappiness50());
+        _hall.GenerateContenders();
+        var chosenContender = _princess.ChooseContender();
         _princess.CountHappiness(chosenContender?.Name);
-        Assert.That(_princess.Happiness, Is.EqualTo(HappinessIfThird));
+        _princess.Happiness.Should().Be(HappinessIfThird);
     }
 
     [Test]
     public void PrincessChoose_IfTheFirstContender_ShouldHaveHappiness20()
     {
-        contenders = GenerateContendersForPrincessHappiness20();
-        _hall.GenerateContenders(contenders);
-        chosenContender = _princess.ChooseContender();
+        _mockContenderGenerator.Setup(contenderGenerator => contenderGenerator.GenerateContenders())
+            .Returns(GenerateContendersForPrincessHappiness20());
+        _hall.GenerateContenders();
+        var chosenContender = _princess.ChooseContender();
         _princess.CountHappiness(chosenContender?.Name);
-        Assert.That(_princess.Happiness, Is.EqualTo(HappinessIfFirst));
+        _princess.Happiness.Should().Be(HappinessIfFirst);
     }
 
     [Test]
     public void PrincessChoose_IfAnotherContender_ShouldHaveHappiness0()
     {
-        contenders = GenerateContendersForPrincessHappiness0();
-        _hall.GenerateContenders(contenders);
-        chosenContender = _princess.ChooseContender();
+        _mockContenderGenerator.Setup(contenderGenerator => contenderGenerator.GenerateContenders())
+            .Returns(GenerateContendersForPrincessHappiness0());
+        _hall.GenerateContenders();
+        var chosenContender = _princess.ChooseContender();
         _princess.CountHappiness(chosenContender?.Name);
-        Assert.That(_princess.Happiness, Is.EqualTo(HappinessIfAnother));
+        _princess.Happiness.Should().Be(HappinessIfAnother);
     }
 
     [Test]
     public void PrincessChoose_IfNobodyChoose_ShouldHaveHappiness10()
     {
-        contenders = GenerateContendersForAlonePrincess();
-        _hall.GenerateContenders(contenders);
-        chosenContender = _princess.ChooseContender();
+        _mockContenderGenerator.Setup(contenderGenerator => contenderGenerator.GenerateContenders())
+            .Returns(GenerateContendersForAlonePrincess());
+        _hall.GenerateContenders();
+        var chosenContender = _princess.ChooseContender();
         _princess.CountHappiness(chosenContender?.Name);
-        Assert.That(_princess.Happiness, Is.EqualTo(HappinessIfNoContender));
+        _princess.Happiness.Should().Be(HappinessIfNoContender);
     }
 
     [Test]
     public void CallNextContender_ThrowExceptionNoMoreContendersInHall()
     {
-        contenders = GenerateContendersForAlonePrincess();
+        var contenders = GenerateContendersForAlonePrincess();
         _hall.SkipContenders(NumberOfContenders);
         var act = () => _hall.VisitContender(NumberOfContenders + 1);
         act.Should().Throw<Exception>()
-            .WithMessage("Princess trying to visit contender out of turn! Nobody in hall!");
+            .WithMessage(Resourses.NobodyInHallException);
     }
 
     private static Contender[] GenerateContendersForAlonePrincess()

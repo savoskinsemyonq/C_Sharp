@@ -7,9 +7,9 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
 
     {
-        services.AddHostedService<PrincessTrouble.model.Princess>();
+        services.AddHostedService<Princess>();
 
-        services.AddScoped<ContendersGenerator>();
+        services.AddScoped<IContendersGenerator,ContendersGenerator>();
 
         services.AddScoped<Hall>();
 

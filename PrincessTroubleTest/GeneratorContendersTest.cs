@@ -7,6 +7,8 @@ public class ContendersGeneratorTests
 {
     private ContendersGenerator _contendersGenerator;
 
+    private const int NumberOfContenders = 100;
+
     [SetUp]
     public void Setup()
     {
@@ -16,8 +18,15 @@ public class ContendersGeneratorTests
     [Test]
     public void GenerateContenders_ShouldBeUniqueNames()
     {
-        var contrnders = _contendersGenerator.GenerateContenders();
-        var contenders_names = contrnders.Select(contender => contender.Name);
-        contenders_names.Should().OnlyHaveUniqueItems();
+        var contenders = _contendersGenerator.GenerateContenders();
+        var contendersNames = contenders.Select(contender => contender.Name);
+        contendersNames.Should().OnlyHaveUniqueItems();
+    }
+
+    [Test]
+    public void GenerateContenders_ShouldBe100Contenders()
+    {
+        var contenders = _contendersGenerator.GenerateContenders();
+        contenders.Length.Should().Be(NumberOfContenders);
     }
 }

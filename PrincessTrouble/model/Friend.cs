@@ -17,6 +17,6 @@ public class Friend
                 ? contender1
                 : contender2;
 
-        throw new Exception("Friend trying to compare contenders, who didn't meet princess");
+        throw new Exception(Resourses.FriendCompareContendersException);
     }
 }

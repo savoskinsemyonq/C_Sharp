@@ -2,31 +2,28 @@ namespace PrincessTrouble.model;
 
 public class Hall
 {
-    private readonly ContendersGenerator _contendersGenerator;
+    private readonly IContendersGenerator _contendersGenerator;
+
     private Contender[] _allContenders;
 
-    public Hall(ContendersGenerator contendersGenerator)
+    private int СontendersNumberWhoVisitedPrincess { get; set; }
+
+    public Hall(IContendersGenerator contendersGenerator)
     {
         _contendersGenerator = contendersGenerator;
         СontendersNumberWhoVisitedPrincess = 0;
     }
 
-    private int СontendersNumberWhoVisitedPrincess { get; set; }
-
     public void GenerateContenders()
     {
         _allContenders = _contendersGenerator.GenerateContenders();
-    }
-    //for test
-    public void GenerateContenders(Contender[] contenders)
-    {
-        _allContenders = contenders;
     }
 
     public void SkipContenders(int numberSkippedContenders)
     {
         СontendersNumberWhoVisitedPrincess = numberSkippedContenders;
     }
+
     public void PrintListVisitedContenders()
     {
         Console.WriteLine("Список участвовавших в отборе!");
@@ -36,9 +33,9 @@ public class Hall
 
     public IContender PeekContender(int visitNumber)
     {
-        if (visitNumber <= СontendersNumberWhoVisitedPrincess) return _allContenders[visitNumber];
+        if (visitNumber < СontendersNumberWhoVisitedPrincess) return _allContenders[visitNumber];
 
-        throw new Exception("Princess trying to peek contender, who didn't visit princess!");
+        throw new Exception(Resourses.PeekContenderOutOfTurnException);
     }
 
     public IContender VisitContender(int visitNumber)
@@ -49,7 +46,7 @@ public class Hall
             return _allContenders[visitNumber];
         }
 
-        throw new Exception("Princess trying to visit contender out of turn! Nobody in hall!");
+        throw new Exception(Resourses.NobodyInHallException);
     }
 
     public bool IsContenderVisitedPrincess(IContender contender)
@@ -64,6 +61,6 @@ public class Hall
         var contender = Array.Find(whoVisited, cont => cont.Name.Equals(contenderName));
         if (contender != null) return contender.Score;
 
-        throw new Exception("Trying get contender score, who didn't meet princess");
+        throw new Exception(Resourses.GetScoreContenderWhoNotVisit);
     }
 }
