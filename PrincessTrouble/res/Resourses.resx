@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="FriendCompareContendersException" xml:space="preserve">
+        <value>"Friend trying to compare contenders, who didn't meet princess"</value>
+    </data>
+    <data name="NobodyInHallException" xml:space="preserve">
+        <value>"Princess trying to visit contender out of turn! Nobody in hall!"</value>
+    </data>
+    <data name="PeekContenderOutOfTurnException" xml:space="preserve">
+        <value>"Princess trying to peek contender, who didn't visit princess!"</value>
+    </data>
+    <data name="GetScoreContenderWhoNotVisit" xml:space="preserve">
+        <value>"Trying get contender score, who didn't meet princess"</value>
+    </data>
+</root>

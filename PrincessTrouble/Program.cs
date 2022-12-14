@@ -1,15 +1,15 @@
-﻿using PrincessProblem;
-using PrincessProblem.model;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PrincessTrouble;
+using PrincessTrouble.model;
 
-IHost host = Host.CreateDefaultBuilder(args)
+var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
 
     {
         services.AddHostedService<Princess>();
 
-        services.AddScoped<ContendersGenerator>();
+        services.AddScoped<IContendersGenerator,ContendersGenerator>();
 
         services.AddScoped<Hall>();
 

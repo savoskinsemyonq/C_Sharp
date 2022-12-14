@@ -1,22 +1,27 @@
 using Microsoft.Extensions.Hosting;
 
-namespace PrincessProblem.model;
+namespace PrincessTrouble.model;
 
 public class Princess : IHostedService
 {
-    private readonly Friend _princessFriend;
-
-    private readonly Hall _hallOfContenders;
-
-    private readonly IHostApplicationLifetime _appLifetime;
-
     private const int HappinessIfNoContender = 10;
 
-    private const int ThresholdGoodContender = 51;
+    private const int HappinessIfFirst = 20;
+
+    private const int HappinessIfThird = 50;
+    
+    private const int HappinessIfAnother = 0;
+
+    private const int HappinessIfFifth = 100;
 
     private const int NumberAllContenders = 100;
 
-    public int Happiness { get; private set; }
+    private const int NumberSkippedContenders = 25;
+
+    private readonly IHostApplicationLifetime _appLifetime;
+
+    private readonly Hall _hallOfContenders;
+    private readonly Friend _princessFriend;
 
     public Princess(Hall hall, Friend friend, IHostApplicationLifetime appLifetime)
     {
@@ -25,10 +30,24 @@ public class Princess : IHostedService
         _appLifetime = appLifetime;
     }
 
+    public int Happiness { get; private set; }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        Task.Run(RunAsync, cancellationToken);
+        return Task.CompletedTask;
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
     public IContender? ChooseContender()
     {
         //contenders skipped
-        var numberLastContender = Constants.NumberSkippedContenders;
+        var numberLastContender = NumberSkippedContenders;
+        _hallOfContenders.SkipContenders(numberLastContender);
         IContender? chosenContender;
         while (numberLastContender < NumberAllContenders)
         {
@@ -39,10 +58,7 @@ public class Princess : IHostedService
             {
                 var winner = _princessFriend.CompareContenders(_hallOfContenders.PeekContender(i),
                     currentContender);
-                if (winner == currentContender)
-                {
-                    countSuccessCompare++;
-                }
+                if (winner == currentContender) countSuccessCompare++;
             }
 
             //magic threshold for choose good contender
@@ -70,7 +86,21 @@ public class Princess : IHostedService
         else
         {
             var score = _hallOfContenders.GetContenderScore(chosenContenderName);
-            Happiness = score < ThresholdGoodContender ? 0 : score;
+            switch (score)
+            {
+                case 100:
+                    Happiness = HappinessIfFirst;
+                    break;
+                case 98:
+                    Happiness = HappinessIfThird;
+                    break;
+                case 96:
+                    Happiness = HappinessIfFifth;
+                    break;
+                default:
+                    Happiness = HappinessIfAnother;
+                    break;
+            }
         }
     }
 
@@ -78,12 +108,6 @@ public class Princess : IHostedService
     {
         Console.WriteLine("---");
         Console.WriteLine($"Принцесса счастлива на {Happiness}/100");
-    }
-
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
-        Task.Run(RunAsync, cancellationToken);
-        return Task.CompletedTask;
     }
 
     public void RunAsync()
@@ -94,10 +118,5 @@ public class Princess : IHostedService
         _hallOfContenders.PrintListVisitedContenders();
         PrintPrincessHappiness();
         _appLifetime.StopApplication();
-    }
-
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
     }
 }
